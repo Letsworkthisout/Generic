@@ -9,12 +9,12 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
  background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:10px;color:#222;}
 .container{max-width:460px;margin:0 auto;background:#fff;border-radius:18px;
- box-shadow:0 10px 30px rgba(0,0,0,.3);overflow:hidden;padding-top:6px;}
-.gear{background:#eee;border:none;font-size:15px;width:32px;height:32px;border-radius:9px;cursor:pointer;}
+ box-shadow:0 10px 30px rgba(0,0,0,.3);overflow:hidden;padding-bottom:62px;position:relative;min-height:70vh;}
+.tab{display:none;padding-top:8px;}
+.tab.active{display:block;}
 
-.box{border-radius:12px;margin:12px;overflow:hidden;}
-.box-head{display:flex;justify-content:space-between;align-items:center;
- padding:5px 12px;font-weight:800;font-size:15px;background:transparent;}
+.box{border-radius:12px;margin:10px 12px;overflow:hidden;}
+.box-head{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;font-weight:800;font-size:15px;}
 .box-head span{font-size:11px;font-weight:600;color:#777;}
 .pair{display:grid;grid-template-columns:1fr 1fr;}
 .cell{padding:8px;text-align:center;}
@@ -25,34 +25,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
 .rem small{font-size:12px;color:#999;font-weight:600;}
 .dl{font-size:11px;font-weight:700;margin:2px 0 0;}
 .tiny{font-size:10px;color:#9a9a9a;}
-.log{width:100%;border:none;border-radius:8px;padding:9px 0;font-weight:700;
- font-size:14px;cursor:pointer;margin-top:6px;}
+.log{width:100%;border:none;border-radius:8px;padding:9px 0;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;}
 .log:active{transform:scale(.96);}
 .log:disabled{background:#d8d8d8 !important;color:#999 !important;}
 
-.viewbtn{display:block;width:calc(100% - 24px);margin:4px 12px 10px;padding:13px;
- background:#2962ff;color:#fff;border:none;border-radius:11px;font-size:16px;
- font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(41,98,255,.35);}
+.today{display:flex;gap:8px;margin:4px 12px 8px;}
+.tcard{flex:1;border-radius:10px;padding:9px;text-align:center;}
+.tcard b{display:block;font-size:17px;}
+.tcard span{font-size:10px;color:#777;}
 
-.section{border-top:8px solid #f0f0f0;padding:14px 16px;}
+.section{padding:12px 16px;}
 .section h2{font-size:14px;margin-bottom:10px;color:#333;}
-.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.sec-head h2{margin:0;}
 .field{margin-bottom:10px;}
 .field label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:#555;}
 .field input{width:100%;padding:9px;border:2px solid #e2e2e2;border-radius:8px;font-size:14px;}
-.due-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.due-grid label{font-size:11px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.grid2 label{font-size:11px;}
 
-.totals{display:flex;gap:8px;margin-bottom:12px;}
-.tot{flex:1;background:#f5f5f5;border-radius:10px;padding:9px;text-align:center;}
-.tot b{display:block;font-size:16px;}
-.tot span{font-size:10px;color:#777;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-th,td{padding:7px 5px;text-align:left;border-bottom:1px solid #eee;}
-th{background:#fafafa;font-weight:600;}
-.row{cursor:pointer;}.row:active{background:#f0f0f0;}
-.chip{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+.day{padding:7px 0;border-bottom:1px solid #e6e6e6;}
+.day-head{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;}
+.day-head .dt{font-weight:700;}
+.day-head .tot b{font-weight:800;}
+.entry{display:flex;justify-content:space-between;font-size:13px;color:#444;padding:3px 2px 3px 6px;cursor:pointer;}
+.entry:active{background:#f2f2f2;}
+.chip{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;border:1px solid #ddd;}
+
+.chart-wrap{position:relative;margin:6px 10px;}
+.chart-toggle{position:absolute;top:2px;left:2px;display:flex;gap:4px;z-index:2;}
+.ct{font-size:11px;font-weight:700;border:1px solid #ccc;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;color:#555;}
+.ct.on{background:#333;color:#fff;border-color:#333;}
 
 .sync-row{display:flex;gap:8px;}.sync-row input{flex:1;}
 .btn{border:none;border-radius:8px;padding:10px 12px;font-weight:600;color:#fff;cursor:pointer;font-size:13px;}
@@ -60,8 +61,12 @@ th{background:#fafafa;font-weight:600;}
 .status{font-size:12px;margin-top:8px;color:#555;min-height:16px;}
 .muted{font-size:12px;color:#888;}
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;
- align-items:center;justify-content:center;padding:14px;z-index:100;}
+.tabbar{position:absolute;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:1px solid #eee;}
+.tabbtn{flex:1;border:none;background:none;padding:10px 0;font-size:12px;font-weight:600;color:#999;cursor:pointer;}
+.tabbtn.on{color:#2962ff;}
+.tabbtn b{display:block;font-size:17px;line-height:1;margin-bottom:2px;}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:14px;z-index:100;}
 .modal-content{background:#fff;padding:20px;border-radius:14px;width:100%;max-width:360px;}
 .modal h3{text-align:center;margin-bottom:16px;}
 .modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
@@ -70,38 +75,80 @@ th{background:#fafafa;font-weight:600;}
 </head>
 <body>
 <div class="container">
-  <div id="boxes"></div>
 
-  <button class="viewbtn" onclick="scrollToData()">📊 View data &amp; totals</button>
-
-  <div class="section" id="dataSection">
-    <h2>Data &amp; totals</h2>
-    <div class="totals" id="totals"></div>
-    <div id="table"></div>
+  <!-- HOME -->
+  <div class="tab active" id="tab-home">
+    <div id="boxes"></div>
+    <div class="today" id="todayTotals"></div>
+    <div class="section" style="padding-top:0"><h2>Today's log</h2><div id="todayLog"></div></div>
+    <div class="section" style="padding-top:0"><div class="field"><label>Note</label><input id="notesHome" placeholder="Notes"></div></div>
   </div>
 
-  <div class="section">
-    <div class="sec-head"><h2>Due dates</h2><button class="gear" onclick="openSettings()">⚙︎</button></div>
-    <div class="due-grid" id="dueGrid"></div>
-  </div>
-
-  <div class="section">
-    <h2>Notes</h2>
-    <div class="field"><label>Next date (optional)</label><input type="date" id="collectionDate"></div>
-    <div class="field"><label>Notes</label><input type="text" id="notes" placeholder="Notes"></div>
-  </div>
-
-  <div class="section">
-    <h2>Cloud sync (optional)</h2>
-    <p class="muted" style="margin-bottom:10px">Keeps data across devices and after clearing browser data. One-time Supabase setup (free) — see the steps I sent. Leave blank and it still saves on this device.</p>
-    <div class="field"><label>Project URL</label><input id="supaUrl" placeholder="https://xxxx.supabase.co"></div>
-    <div class="field"><label>Anon public key</label><input id="supaKey" placeholder="eyJ..."></div>
-    <div class="sync-row"><input id="syncCode" placeholder="Your code (any word)"><button class="btn b-blue" onclick="loadByCode()">Load</button></div>
-    <div class="modal-btns" style="margin-top:8px">
-      <button class="btn b-green" onclick="connectSave()">Connect &amp; save</button>
-      <button class="btn b-gray" onclick="exportCSV()">Export CSV</button>
+  <!-- DATA -->
+  <div class="tab" id="tab-data">
+    <div class="section">
+      <h2>Totals</h2>
+      <div class="today" id="dataTotals" style="margin:0 0 10px"></div>
+      <h2>By day</h2>
+      <div id="table"></div>
     </div>
-    <div class="status" id="syncStatus"></div>
+    <div class="section" style="padding-top:0"><div class="field"><label>Note</label><input id="notesData" placeholder="Notes"></div></div>
+  </div>
+
+  <!-- CHART -->
+  <div class="tab" id="tab-chart">
+    <div class="chart-wrap">
+      <div class="chart-toggle">
+        <button class="ct on" id="ct-both" onclick="setChartMode('both')">Both</button>
+        <button class="ct" id="ct-L" onclick="setChartMode('L')">L</button>
+        <button class="ct" id="ct-A" onclick="setChartMode('A')">A</button>
+      </div>
+      <div id="chartSvg"></div>
+    </div>
+    <p class="muted" style="margin:4px 16px 0">Shaded = 4 days before O / before P. Set O and P in Setup.</p>
+  </div>
+
+  <!-- SETUP -->
+  <div class="tab" id="tab-setup">
+    <div class="section">
+      <h2>Pack sizes</h2>
+      <div class="grid2">
+        <div class="field"><label>L 30 mg</label><input type="number" min="0" id="t-L-30"></div>
+        <div class="field"><label>L 20 mg</label><input type="number" min="0" id="t-L-20"></div>
+        <div class="field"><label>A 40 mg</label><input type="number" min="0" id="t-A-40"></div>
+        <div class="field"><label>A 18 mg</label><input type="number" min="0" id="t-A-18"></div>
+      </div>
+    </div>
+    <div class="section" style="padding-top:0">
+      <h2>Due dates</h2>
+      <div class="grid2" id="dueGrid"></div>
+    </div>
+    <div class="section" style="padding-top:0">
+      <h2>Cycle dates</h2>
+      <div class="grid2">
+        <div class="field"><label>O date</label><input type="date" id="oDate"></div>
+        <div class="field"><label>P date</label><input type="date" id="pDate"></div>
+      </div>
+      <p class="muted">O and P repeat every 28 days to predict the future. When a real one lands early or late, update it here to resync.</p>
+    </div>
+    <div class="section" style="padding-top:0">
+      <h2>Cloud sync (optional)</h2>
+      <div class="field"><label>Project URL</label><input id="supaUrl" placeholder="https://xxxx.supabase.co"></div>
+      <div class="field"><label>Anon public key</label><input id="supaKey" placeholder="eyJ..."></div>
+      <div class="sync-row"><input id="syncCode" placeholder="Your code (any word)"><button class="btn b-blue" onclick="loadByCode()">Load</button></div>
+      <div class="modal-btns" style="margin-top:8px">
+        <button class="btn b-green" onclick="connectSave()">Connect &amp; save</button>
+        <button class="btn b-gray" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div class="status" id="syncStatus"></div>
+    </div>
+  </div>
+
+  <div class="tabbar">
+    <button class="tabbtn on" id="nav-home" onclick="showTab('home')"><b>🏠</b>Home</button>
+    <button class="tabbtn" id="nav-data" onclick="showTab('data')"><b>📋</b>Data</button>
+    <button class="tabbtn" id="nav-chart" onclick="showTab('chart')"><b>📈</b>Chart</button>
+    <button class="tabbtn" id="nav-setup" onclick="showTab('setup')"><b>⚙︎</b>Setup</button>
   </div>
 </div>
 
@@ -119,22 +166,6 @@ th{background:#fafafa;font-weight:600;}
   </div>
 </div>
 
-<!-- Settings modal -->
-<div id="setModal" class="modal">
-  <div class="modal-content">
-    <h3>Pack sizes</h3>
-    <p class="muted" style="margin-bottom:12px">Full-cycle quantity for each.</p>
-    <div class="field"><label>L · 30 mg</label><input type="number" id="t-L-30" min="0"></div>
-    <div class="field"><label>L · 20 mg</label><input type="number" id="t-L-20" min="0"></div>
-    <div class="field"><label>A · 40 mg</label><input type="number" id="t-A-40" min="0"></div>
-    <div class="field"><label>A · 18 mg</label><input type="number" id="t-A-18" min="0"></div>
-    <div class="modal-btns">
-      <button class="btn b-blue" onclick="saveSettings()">Save</button>
-      <button class="btn b-gray" onclick="closeModal('setModal')">Cancel</button>
-    </div>
-  </div>
-</div>
-
 <script>
 const ITEMS=[
   {key:'L-30',grp:'L',mg:30,accent:'#FF1493',text:'#fff'},
@@ -144,25 +175,24 @@ const ITEMS=[
 ];
 const GRP_COLOR={L:'#FF1493',A:'#2979FF'};
 const BORDER={L:'#F4A6C8',A:'#A9C6FF'};
+const DOW=['S','M','T','W','T','F','S'];
 
-let data=blank(), currentEdit=null, pushTimer=null;
+let data=blank(), currentEdit=null, pushTimer=null, chartMode='both';
 
-function blank(){const d={notes:'',collectionDate:'',totals:{},due:{},doses:{}};
+function blank(){const d={notes:'',oDate:'',pDate:'',totals:{},due:{},doses:{}};
   ITEMS.forEach(s=>{d.totals[s.key]=28;d.due[s.key]='';d.doses[s.key]=[];});return d;}
 
 window.addEventListener('load',()=>{
   loadLocal();
-  document.getElementById('collectionDate').value=data.collectionDate;
-  document.getElementById('notes').value=data.notes;
-  document.getElementById('collectionDate').addEventListener('change',e=>{data.collectionDate=e.target.value;save();});
-  document.getElementById('notes').addEventListener('input',e=>{data.notes=e.target.value;save();});
-  // restore sync config
+  bindInputs();
   const u=localStorage.getItem('supaUrl')||'',k=localStorage.getItem('supaKey')||'',c=localStorage.getItem('trackerCode')||'';
-  document.getElementById('supaUrl').value=u;document.getElementById('supaKey').value=k;document.getElementById('syncCode').value=c;
+  el('supaUrl').value=u;el('supaKey').value=k;el('syncCode').value=c;
+  fillSetup();
   render();
   if(u&&k&&c) pull(u,k,c,true);
 });
 
+function el(id){return document.getElementById(id);}
 function loadLocal(){try{const s=localStorage.getItem('trackerData');
   if(s){const p=JSON.parse(s);data=Object.assign(blank(),p);
     ITEMS.forEach(x=>{data.totals[x.key]??=28;data.due[x.key]??='';if(!Array.isArray(data.doses[x.key]))data.doses[x.key]=[];});}
@@ -171,27 +201,46 @@ function save(){try{localStorage.setItem('trackerData',JSON.stringify(data));}ca
   const u=localStorage.getItem('supaUrl'),k=localStorage.getItem('supaKey'),c=localStorage.getItem('trackerCode');
   if(u&&k&&c){clearTimeout(pushTimer);pushTimer=setTimeout(()=>push(u,k,c),800);}}
 
-function remaining(k){return Math.max(0,(data.totals[k]||0)-data.doses[k].length);}
-function daysLeft(k){if(!data.due[k])return null;const t=new Date();t.setHours(0,0,0,0);
-  return Math.ceil((new Date(data.due[k])-t)/86400000);}
-function daysColor(n){if(n===null)return '#aaa';if(n<0||n<=2)return '#d32f2f';if(n<=6)return '#f57c00';return '#2e7d32';}
+function bindInputs(){
+  el('notesHome').addEventListener('input',e=>{data.notes=e.target.value;el('notesData').value=e.target.value;save();});
+  el('notesData').addEventListener('input',e=>{data.notes=e.target.value;el('notesHome').value=e.target.value;save();});
+  ITEMS.forEach(s=>el('t-'+s.key).addEventListener('input',e=>{const v=parseInt(e.target.value);data.totals[s.key]=isNaN(v)?0:v;save();render();}));
+  el('oDate').addEventListener('change',e=>{data.oDate=e.target.value;save();drawChart();});
+  el('pDate').addEventListener('change',e=>{data.pDate=e.target.value;save();drawChart();});
+}
+function fillSetup(){
+  el('notesHome').value=data.notes;el('notesData').value=data.notes;
+  ITEMS.forEach(s=>el('t-'+s.key).value=data.totals[s.key]);
+  el('oDate').value=data.oDate;el('pDate').value=data.pDate;
+  const g=el('dueGrid');g.innerHTML='';
+  ITEMS.forEach(s=>{const d=document.createElement('div');d.className='field';
+    d.innerHTML=`<label>${s.grp} ${s.mg} mg</label><input type="date" value="${data.due[s.key]||''}" onchange="setDue('${s.key}',this.value)">`;g.appendChild(d);});
+}
+function setDue(k,v){data.due[k]=v;save();render();}
 
-function render(){
-  const wrap=document.getElementById('boxes');wrap.innerHTML='';
+function remaining(k){return Math.max(0,(data.totals[k]||0)-data.doses[k].length);}
+function daysLeft(k){if(!data.due[k])return null;const t=new Date();t.setHours(0,0,0,0);return Math.ceil((parseLocal(data.due[k])-t)/86400000);}
+function daysColor(n){if(n===null)return '#aaa';if(n<0||n<=2)return '#d32f2f';if(n<=6)return '#f57c00';return '#2e7d32';}
+function parseLocal(s){const p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function localDay(ts){return fmt(new Date(ts));}
+function todayStr(){return fmt(new Date());}
+
+function render(){renderHome();renderData();drawChart();}
+
+function renderHome(){
+  const wrap=el('boxes');wrap.innerHTML='';
   ['L','A'].forEach(grp=>{
     const items=ITEMS.filter(i=>i.grp===grp);
     const left=items.reduce((a,s)=>a+remaining(s.key),0);
-    const box=document.createElement('div');box.className='box';
-    box.style.border='2px solid '+BORDER[grp];
+    const box=document.createElement('div');box.className='box';box.style.border='2px solid '+BORDER[grp];
     box.innerHTML=`<div class="box-head" style="color:${GRP_COLOR[grp]}">${grp}<span>${left} left</span></div>`;
     const pair=document.createElement('div');pair.className='pair';
     items.forEach(s=>{
-      const rem=remaining(s.key),dl=daysLeft(s.key);
-      const remMg=rem*s.mg,totMg=(data.totals[s.key]||0)*s.mg;
-      const dlText=dl===null?'set due below':(dl<0?`overdue ${Math.abs(dl)}d`:(dl===0?'due today':`${dl} days left`));
+      const rem=remaining(s.key),dl=daysLeft(s.key),remMg=rem*s.mg,totMg=(data.totals[s.key]||0)*s.mg;
+      const dlText=dl===null?'set due in setup':(dl<0?`overdue ${Math.abs(dl)}d`:(dl===0?'due today':`${dl} days left`));
       const cell=document.createElement('div');cell.className='cell';
-      cell.innerHTML=`
-        <div class="bar" style="background:${s.accent}"></div>
+      cell.innerHTML=`<div class="bar" style="background:${s.accent}"></div>
         <div class="mg">${s.mg} mg</div>
         <div class="rem">${rem}<small>/${data.totals[s.key]||0}</small></div>
         <div class="dl" style="color:${daysColor(dl)}">${dlText}</div>
@@ -201,114 +250,138 @@ function render(){
     });
     box.appendChild(pair);wrap.appendChild(box);
   });
-  renderDue();renderData();
+  // today totals
+  const td=todayStr();const t=groupTotalsForDay(td);
+  el('todayTotals').innerHTML=todayCards(t);
+  // today log
+  const rows=allDoses().filter(r=>localDay(r.ts)===td).sort((a,b)=>new Date(b.ts)-new Date(a.ts));
+  el('todayLog').innerHTML=rows.length?rows.map(r=>entryHtml(r)).join(''):'<p class="muted">Nothing logged today.</p>';
 }
-
-function renderDue(){
-  const g=document.getElementById('dueGrid');g.innerHTML='';
-  ITEMS.forEach(s=>{
-    const d=document.createElement('div');d.className='field';
-    d.innerHTML=`<label>${s.grp} ${s.mg} mg</label><input type="date" value="${data.due[s.key]||''}" onchange="setDue('${s.key}',this.value)">`;
-    g.appendChild(d);
-  });
+function todayCards(t){
+  return `<div class="tcard" style="background:#FDE7F1"><b style="color:${GRP_COLOR.L}">${t.L.ct} · ${t.L.mg}mg</b><span>L today</span></div>
+          <div class="tcard" style="background:#E5EEFF"><b style="color:${GRP_COLOR.A}">${t.A.ct} · ${t.A.mg}mg</b><span>A today</span></div>`;
 }
-function setDue(k,v){data.due[k]=v;save();render();}
-function takeOne(k){data.doses[k].push({id:uid(),ts:new Date().toISOString()});save();render();}
+function groupTotalsForDay(dayStr){
+  const t={L:{ct:0,mg:0},A:{ct:0,mg:0}};
+  ITEMS.forEach(s=>data.doses[s.key].forEach(d=>{if(localDay(d.ts)===dayStr){t[s.grp].ct++;t[s.grp].mg+=s.mg;}}));
+  return t;
+}
+function allDoses(){const r=[];ITEMS.forEach(s=>data.doses[s.key].forEach(d=>r.push({...d,grp:s.grp,mg:s.mg,accent:s.accent,key:s.key})));return r;}
+function entryHtml(r){const dt=new Date(r.ts);
+  return `<div class="entry" onclick="openEdit('${r.key}','${r.id}')"><span><span class="chip" style="background:${r.accent}"></span>${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span><span>${r.grp} ${r.mg}mg</span></div>`;}
 
 function renderData(){
+  // grand totals
   let lMg=0,aMg=0,lCt=0,aCt=0;
   ITEMS.forEach(s=>{const c=data.doses[s.key].length,m=c*s.mg;if(s.grp==='L'){lMg+=m;lCt+=c;}else{aMg+=m;aCt+=c;}});
-  document.getElementById('totals').innerHTML=`
-    <div class="tot"><b style="color:${GRP_COLOR.L}">${lMg}mg</b><span>L · ${lCt} logged</span></div>
-    <div class="tot"><b style="color:${GRP_COLOR.A}">${aMg}mg</b><span>A · ${aCt} logged</span></div>
-    <div class="tot"><b>${lMg+aMg}mg</b><span>Total</span></div>`;
-  const rows=[];
-  ITEMS.forEach(s=>data.doses[s.key].forEach(d=>rows.push({...d,grp:s.grp,mg:s.mg,accent:s.accent,key:s.key})));
-  rows.sort((a,b)=>new Date(b.ts)-new Date(a.ts));
-  let html;
-  if(!rows.length){html='<p class="muted" style="padding:8px 0">Nothing logged yet.</p>';}
-  else{
-    html='<table><thead><tr><th>Type</th><th>mg</th><th>Date</th><th>Time</th></tr></thead><tbody>';
-    rows.forEach(r=>{const dt=new Date(r.ts);
-      html+=`<tr class="row" onclick="openEdit('${r.key}','${r.id}')">
-        <td><span class="chip" style="background:${r.accent};border:1px solid #ddd"></span>${r.grp}</td>
-        <td>${r.mg}</td><td>${dt.toLocaleDateString('en-GB')}</td>
-        <td>${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td></tr>`;});
-    html+='</tbody></table><p class="muted" style="margin-top:6px">Tap a row to fix the date/time or delete.</p>';
-  }
-  document.getElementById('table').innerHTML=html;
+  el('dataTotals').innerHTML=`<div class="tcard" style="background:#FDE7F1"><b style="color:${GRP_COLOR.L}">${lMg}mg</b><span>L · ${lCt} logged</span></div>
+    <div class="tcard" style="background:#E5EEFF"><b style="color:${GRP_COLOR.A}">${aMg}mg</b><span>A · ${aCt} logged</span></div>`;
+  // by day
+  const rows=allDoses();
+  const byDay={};
+  rows.forEach(r=>{const d=localDay(r.ts);(byDay[d]=byDay[d]||[]).push(r);});
+  const days=Object.keys(byDay).sort((a,b)=>b.localeCompare(a));
+  let html='';
+  if(!days.length){html='<p class="muted">Nothing logged yet.</p>';}
+  days.forEach(d=>{
+    const list=byDay[d].sort((a,b)=>new Date(b.ts)-new Date(a.ts));
+    let L=0,A=0;list.forEach(r=>{if(r.grp==='L')L++;else A++;});
+    const dt=parseLocal(d);
+    html+=`<div class="day"><div class="day-head"><span class="dt">${DOW[dt.getDay()]} ${dt.getDate()}/${dt.getMonth()+1}</span>
+      <span class="tot"><b style="color:${GRP_COLOR.L}">L ${L}</b> · <b style="color:${GRP_COLOR.A}">A ${A}</b></span></div>`;
+    html+=list.map(r=>entryHtml(r)).join('');
+    html+='</div>';
+  });
+  el('table').innerHTML=html;
 }
-function scrollToData(){document.getElementById('dataSection').scrollIntoView({behavior:'smooth'});}
 
-function openEdit(key,id){currentEdit={key,id};
-  const s=ITEMS.find(x=>x.key===key);const ts=new Date(data.doses[key].find(d=>d.id===id).ts);
-  document.getElementById('doseTitle').textContent=`${s.grp} · ${s.mg} mg`;
-  document.getElementById('doseDate').value=ts.toISOString().split('T')[0];
-  document.getElementById('doseTime').value=ts.toTimeString().slice(0,5);
-  document.getElementById('doseModal').style.display='flex';}
-function saveDose(){const dv=document.getElementById('doseDate').value,tv=document.getElementById('doseTime').value;
-  if(!dv||!tv){alert('Set date and time');return;}
-  data.doses[currentEdit.key].find(d=>d.id===currentEdit.id).ts=new Date(`${dv}T${tv}`).toISOString();
-  save();render();closeModal('doseModal');}
+function takeOne(k){data.doses[k].push({id:uid(),ts:new Date().toISOString()});save();render();}
+function openEdit(key,id){currentEdit={key,id};const s=ITEMS.find(x=>x.key===key);const ts=new Date(data.doses[key].find(d=>d.id===id).ts);
+  el('doseTitle').textContent=`${s.grp} · ${s.mg} mg`;el('doseDate').value=ts.toISOString().split('T')[0];el('doseTime').value=ts.toTimeString().slice(0,5);
+  el('doseModal').style.display='flex';}
+function saveDose(){const dv=el('doseDate').value,tv=el('doseTime').value;if(!dv||!tv){alert('Set date and time');return;}
+  data.doses[currentEdit.key].find(d=>d.id===currentEdit.id).ts=new Date(`${dv}T${tv}`).toISOString();save();render();closeModal('doseModal');}
 function deleteDose(){if(!confirm('Delete this entry?'))return;
-  data.doses[currentEdit.key]=data.doses[currentEdit.key].filter(d=>d.id!==currentEdit.id);
-  save();render();closeModal('doseModal');}
+  data.doses[currentEdit.key]=data.doses[currentEdit.key].filter(d=>d.id!==currentEdit.id);save();render();closeModal('doseModal');}
 
-function openSettings(){ITEMS.forEach(s=>document.getElementById('t-'+s.key).value=data.totals[s.key]);
-  document.getElementById('setModal').style.display='flex';}
-function saveSettings(){ITEMS.forEach(s=>{const v=parseInt(document.getElementById('t-'+s.key).value);data.totals[s.key]=isNaN(v)?0:v;});
-  save();render();closeModal('setModal');}
+// ---------- CHART ----------
+function winStart(){const t=new Date();t.setHours(0,0,0,0);t.setDate(t.getDate()-13);return t;}
+function dayIdxOf(dateStr){return Math.round((parseLocal(dateStr)-winStart())/86400000);}
+function waveVal(t){
+  if(!data.oDate||!data.pDate)return null;
+  const o0=dayIdxOf(data.oDate),p0=dayIdxOf(data.pDate);const anchors=[];
+  for(let k=-2;k<=2;k++){anchors.push({t:o0+28*k,v:1});anchors.push({t:p0+28*k,v:-1});}
+  anchors.sort((a,b)=>a.t-b.t);
+  if(t<=anchors[0].t)return anchors[0].v;if(t>=anchors[anchors.length-1].t)return anchors[anchors.length-1].v;
+  let a,b;for(let i=0;i<anchors.length-1;i++){if(anchors[i].t<=t&&anchors[i+1].t>=t){a=anchors[i];b=anchors[i+1];break;}}
+  if(!a)return 0;if(b.t===a.t)return a.v;const tp=(t-a.t)/(b.t-a.t);return a.v*Math.cos(Math.PI*tp);
+}
+function setChartMode(m){chartMode=m;['both','L','A'].forEach(x=>el('ct-'+x).classList.toggle('on',x===m));drawChart();}
+function drawChart(){
+  const W=360,H=215,L=24,R=8,N=28,top=16,yb=175,plotW=W-L-R,cw=plotW/N,mid=100,amp=70;
+  const start=winStart();
+  // per-day counts
+  const cnt=[];for(let i=0;i<N;i++){const d=new Date(start);d.setDate(d.getDate()+i);const ds=fmt(d);let l=0,a=0;
+    ITEMS.forEach(s=>data.doses[s.key].forEach(x=>{if(localDay(x.ts)===ds){if(s.grp==='L')l++;else a++;}}));cnt.push({ds,d,l,a});}
+  const x=i=>L+i*cw+cw/2;
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" xmlns="http://www.w3.org/2000/svg">';
+  // highlight bands: 4 days before each projected O and P
+  function bands(anchorStr,color){if(!anchorStr)return '';let out='';const base=dayIdxOf(anchorStr);
+    for(let k=-1;k<=2;k++){const idx=base+28*k;for(let j=idx-4;j<idx;j++){if(j>=0&&j<N){out+='<rect x="'+(L+j*cw)+'" y="'+top+'" width="'+cw+'" height="'+(yb-top)+'" fill="'+color+'"/>';}}
+      if(idx>=0&&idx<N){out+='<text x="'+x(idx)+'" y="'+(top+10)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#555">'+(color==='rgba(255,171,0,.18)'?'O':'P')+'</text>';}}
+    return out;}
+  s+=bands(data.oDate,'rgba(255,171,0,.18)');
+  s+=bands(data.pDate,'rgba(233,30,99,.14)');
+  // week vertical lines (Mondays)
+  for(let i=0;i<N;i++){if(cnt[i].d.getDay()===1){s+='<line x1="'+(L+i*cw)+'" y1="'+top+'" x2="'+(L+i*cw)+'" y2="'+yb+'" stroke="#d7d7d7" stroke-width="1"/>';}}
+  // today line (index 13)
+  s+='<line x1="'+x(13)+'" y1="'+top+'" x2="'+x(13)+'" y2="'+yb+'" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>';
+  // wave
+  if(data.oDate&&data.pDate){let pts='';for(let f=-0.5;f<=N-0.5;f+=0.5){const v=waveVal(f);const px=L+f*cw+cw/2;const py=mid-v*amp;pts+=(pts?' L':'M')+px.toFixed(1)+','+py.toFixed(1);}
+    s+='<path d="'+pts+'" fill="none" stroke="#7F77DD" stroke-width="2"/>';}
+  // baseline
+  s+='<line x1="'+L+'" y1="'+yb+'" x2="'+(W-R)+'" y2="'+yb+'" stroke="#c3c2b7" stroke-width="1"/>';
+  // bars
+  const unit=16,cap=120,bw=cw*0.3;
+  cnt.forEach((c,i)=>{
+    if(chartMode!=='A'&&c.l>0){const h=Math.min(cap,c.l*unit);s+='<rect x="'+(x(i)-bw-1)+'" y="'+(yb-h)+'" width="'+bw+'" height="'+h+'" rx="1" fill="'+GRP_COLOR.L+'"/>';}
+    if(chartMode!=='L'&&c.a>0){const h=Math.min(cap,c.a*unit);s+='<rect x="'+(x(i)+1)+'" y="'+(yb-h)+'" width="'+bw+'" height="'+h+'" rx="1" fill="'+GRP_COLOR.A+'"/>';}
+  });
+  // day-of-week letters
+  cnt.forEach((c,i)=>{s+='<text x="'+x(i)+'" y="'+(yb+14)+'" text-anchor="middle" font-size="8" fill="#999">'+DOW[c.d.getDay()]+'</text>';});
+  s+='</svg>';
+  el('chartSvg').innerHTML=s;
+}
 
-// ---- Supabase sync ----
-function setStatus(m){document.getElementById('syncStatus').textContent=m;}
-function val(id){return (document.getElementById(id).value||'').trim();}
+// ---------- tabs ----------
+function showTab(name){['home','data','chart','setup'].forEach(n=>{el('tab-'+n).classList.toggle('active',n===name);el('nav-'+n).classList.toggle('on',n===name);});
+  if(name==='chart')drawChart();}
+
+// ---------- Supabase sync ----------
+function setStatus(m){el('syncStatus').textContent=m;}
+function val(id){return (el(id).value||'').trim();}
 function headers(key,extra){return Object.assign({apikey:key,'Authorization':'Bearer '+key,'Content-Type':'application/json'},extra||{});}
 function rememberCfg(u,k,c){localStorage.setItem('supaUrl',u);localStorage.setItem('supaKey',k);localStorage.setItem('trackerCode',c);}
-
-async function connectSave(){
-  const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');
-  if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}
-  setStatus('Saving…');
-  try{
-    const res=await fetch(u+'/rest/v1/boards',{method:'POST',headers:headers(k,{'Prefer':'resolution=merge-duplicates'}),body:JSON.stringify({code:c,data})});
-    if(!res.ok) throw new Error(res.status);
-    rememberCfg(u,k,c);
-    setStatus('Connected & saved. Use the same 3 details + code on any device.');
-  }catch(e){setStatus('Save failed — check the URL/key and that you ran the setup SQL.');}
-}
-async function loadByCode(){
-  const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');
-  if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}
-  pull(u,k,c,false);
-}
-async function pull(u,k,c,silent){
-  if(!silent)setStatus('Loading…');
-  try{
-    const res=await fetch(u+'/rest/v1/boards?code=eq.'+encodeURIComponent(c)+'&select=data',{headers:headers(k)});
-    if(!res.ok) throw new Error();
-    const rows=await res.json();
-    if(!rows.length){if(!silent)setStatus('No saved data for that code yet. Tap Connect & save.');return;}
-    data=Object.assign(blank(),rows[0].data);
-    ITEMS.forEach(x=>{data.totals[x.key]??=28;data.due[x.key]??='';if(!Array.isArray(data.doses[x.key]))data.doses[x.key]=[];});
-    rememberCfg(u,k,c);localStorage.setItem('trackerData',JSON.stringify(data));
-    document.getElementById('collectionDate').value=data.collectionDate;document.getElementById('notes').value=data.notes;
-    render();if(!silent)setStatus('Loaded.');
-  }catch(e){if(!silent)setStatus('Load failed — check the URL/key.');}
-}
+async function connectSave(){const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}
+  setStatus('Saving…');try{const res=await fetch(u+'/rest/v1/boards',{method:'POST',headers:headers(k,{'Prefer':'resolution=merge-duplicates'}),body:JSON.stringify({code:c,data})});
+    if(!res.ok)throw new Error();rememberCfg(u,k,c);setStatus('Connected & saved. It now auto-saves from here.');}catch(e){setStatus('Save failed — check URL/key and that you ran the setup SQL.');}}
+async function loadByCode(){const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}pull(u,k,c,false);}
+async function pull(u,k,c,silent){if(!silent)setStatus('Loading…');
+  try{const res=await fetch(u+'/rest/v1/boards?code=eq.'+encodeURIComponent(c)+'&select=data',{headers:headers(k)});if(!res.ok)throw new Error();
+    const rows=await res.json();if(!rows.length){if(!silent)setStatus('No saved data for that code yet. Tap Connect & save.');return;}
+    data=Object.assign(blank(),rows[0].data);ITEMS.forEach(x=>{data.totals[x.key]??=28;data.due[x.key]??='';if(!Array.isArray(data.doses[x.key]))data.doses[x.key]=[];});
+    rememberCfg(u,k,c);localStorage.setItem('trackerData',JSON.stringify(data));fillSetup();render();if(!silent)setStatus('Loaded.');}
+  catch(e){if(!silent)setStatus('Load failed — check URL/key.');}}
 async function push(u,k,c){try{await fetch(u+'/rest/v1/boards',{method:'POST',headers:headers(k,{'Prefer':'resolution=merge-duplicates'}),body:JSON.stringify({code:c,data})});}catch(e){}}
 
-// ---- helpers ----
-function closeModal(id){document.getElementById(id).style.display='none';currentEdit=null;}
+function closeModal(id){el(id).style.display='none';currentEdit=null;}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-function exportCSV(){const rows=[];ITEMS.forEach(s=>data.doses[s.key].forEach(d=>rows.push({...d,grp:s.grp,mg:s.mg})));
-  rows.sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+function exportCSV(){const rows=allDoses().sort((a,b)=>new Date(a.ts)-new Date(b.ts));
   let csv='Type,Strength(mg),Date,Time,Timestamp\n';
-  rows.forEach(r=>{const dt=new Date(r.ts);
-    csv+=`${r.grp},${r.mg},${dt.toLocaleDateString('en-GB')},${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})},${r.ts}\n`;});
+  rows.forEach(r=>{const dt=new Date(r.ts);csv+=`${r.grp},${r.mg},${dt.toLocaleDateString('en-GB')},${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})},${r.ts}\n`;});
   let l=0,a=0;ITEMS.forEach(s=>{const m=data.doses[s.key].length*s.mg;if(s.grp==='L')l+=m;else a+=m;});
   csv+=`\nTotal L(mg),${l}\nTotal A(mg),${a}\nGrand total(mg),${l+a}\n`;
-  const b=new Blob([csv],{type:'text/csv'});const uu=URL.createObjectURL(b);
-  const link=document.createElement('a');link.href=uu;link.download='tracker-data.csv';link.click();URL.revokeObjectURL(uu);}
+  const b=new Blob([csv],{type:'text/csv'});const uu=URL.createObjectURL(b);const link=document.createElement('a');link.href=uu;link.download='tracker-data.csv';link.click();URL.revokeObjectURL(uu);}
 window.onclick=e=>{if(e.target.classList.contains('modal')){e.target.style.display='none';currentEdit=null;}};
 </script>
 </body>
