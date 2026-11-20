@@ -7,69 +7,77 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
- background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:10px;color:#222;}
-.container{max-width:460px;margin:0 auto;background:#fff;border-radius:18px;
- box-shadow:0 10px 30px rgba(0,0,0,.3);overflow:hidden;padding-bottom:62px;position:relative;min-height:70vh;}
-.tab{display:none;padding-top:8px;}
-.tab.active{display:block;}
+ background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:8px;color:#222;}
+.container{max-width:460px;margin:0 auto;background:#fff;border-radius:16px;
+ box-shadow:0 10px 30px rgba(0,0,0,.3);overflow:hidden;padding-bottom:58px;position:relative;min-height:60vh;}
+.tab{display:none;}.tab.active{display:block;}
 
-.box{border-radius:12px;margin:10px 12px;overflow:hidden;}
-.box-head{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;font-weight:800;font-size:15px;}
+.card{background:#fff;border:1px solid #e6e6e6;border-radius:12px;margin:8px;padding:8px 10px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+.card-head h2{font-size:14px;color:#333;}
+
+.today{display:flex;gap:8px;margin-bottom:8px;}
+.tcard{flex:1;border-radius:10px;padding:8px;text-align:center;}
+.tcard b{display:block;font-size:18px;}
+.tcard span{font-size:10px;color:#777;}
+
+.box{border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.box:last-child{margin-bottom:0;}
+.box-head{display:flex;justify-content:space-between;align-items:center;padding:4px 10px;font-weight:800;font-size:14px;}
 .box-head span{font-size:11px;font-weight:600;color:#777;}
 .pair{display:grid;grid-template-columns:1fr 1fr;}
-.cell{padding:8px;text-align:center;}
+.cell{padding:6px 6px 8px;text-align:center;}
 .cell+.cell{border-left:1px solid #eee;}
-.bar{height:5px;border-radius:3px;margin-bottom:6px;}
-.mg{font-weight:700;font-size:13px;}
-.rem{font-size:21px;font-weight:800;line-height:1.1;margin-top:1px;}
-.rem small{font-size:12px;color:#999;font-weight:600;}
-.dl{font-size:11px;font-weight:700;margin:2px 0 0;}
+.mg{font-weight:800;font-size:13px;}
+.rem{font-size:19px;font-weight:800;line-height:1.05;margin-top:1px;}
+.rem small{font-size:11px;color:#999;font-weight:600;}
+.dl{font-size:11px;font-weight:700;margin-top:1px;}
 .tiny{font-size:10px;color:#9a9a9a;}
-.log{width:100%;border:none;border-radius:8px;padding:9px 0;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;}
+.log{width:100%;border:none;border-radius:8px;padding:8px 0;font-weight:700;font-size:14px;cursor:pointer;margin-top:5px;}
 .log:active{transform:scale(.96);}
 .log:disabled{background:#d8d8d8 !important;color:#999 !important;}
 
-.today{display:flex;gap:8px;margin:4px 12px 8px;}
-.tcard{flex:1;border-radius:10px;padding:9px;text-align:center;}
-.tcard b{display:block;font-size:17px;}
-.tcard span{font-size:10px;color:#777;}
+#todayLog{max-height:26vh;overflow:auto;}
+.entry{display:flex;justify-content:space-between;font-size:13px;color:#444;padding:3px 2px 3px 4px;cursor:pointer;}
+.entry:active{background:#f2f2f2;}
+.chip{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;border:1px solid #ddd;}
+.noteinput{width:100%;padding:7px;border:1px solid #e2e2e2;border-radius:8px;font-size:13px;margin-top:6px;}
 
-.section{padding:12px 16px;}
-.section h2{font-size:14px;margin-bottom:10px;color:#333;}
-.field{margin-bottom:10px;}
-.field label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:#555;}
-.field input{width:100%;padding:9px;border:2px solid #e2e2e2;border-radius:8px;font-size:14px;}
+.section{padding:10px 12px;}
+.section h2{font-size:14px;margin-bottom:8px;color:#333;}
+.field{margin-bottom:9px;}
+.field label{display:block;font-size:12px;font-weight:600;margin-bottom:3px;color:#555;}
+.field input,.field select,.field textarea{width:100%;padding:8px;border:2px solid #e2e2e2;border-radius:8px;font-size:14px;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .grid2 label{font-size:11px;}
 
-.day{padding:7px 0;border-bottom:1px solid #e6e6e6;}
+.day{padding:6px 0;border-bottom:1px solid #e6e6e6;}
 .day-head{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;}
 .day-head .dt{font-weight:700;}
 .day-head .tot b{font-weight:800;}
-.entry{display:flex;justify-content:space-between;font-size:13px;color:#444;padding:3px 2px 3px 6px;cursor:pointer;}
-.entry:active{background:#f2f2f2;}
-.chip{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;border:1px solid #ddd;}
 
-.chart-wrap{position:relative;margin:6px 10px;}
-.chart-toggle{position:absolute;top:2px;left:2px;display:flex;gap:4px;z-index:2;}
+.chart-wrap{position:relative;margin:6px 8px 0;}
+.chart-toggle{position:absolute;top:2px;right:2px;display:flex;gap:4px;z-index:2;}
 .ct{font-size:11px;font-weight:700;border:1px solid #ccc;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;color:#555;}
 .ct.on{background:#333;color:#fff;border-color:#333;}
+.cap{font-size:11px;color:#555;margin:4px 12px 0;font-weight:600;}
 
 .sync-row{display:flex;gap:8px;}.sync-row input{flex:1;}
 .btn{border:none;border-radius:8px;padding:10px 12px;font-weight:600;color:#fff;cursor:pointer;font-size:13px;}
 .b-blue{background:#2962ff;}.b-green{background:#2e7d32;}.b-gray{background:#666;}.b-red{background:#d32f2f;}
+.b-add{background:#5a3fc0;}
 .status{font-size:12px;margin-top:8px;color:#555;min-height:16px;}
 .muted{font-size:12px;color:#888;}
 
 .tabbar{position:absolute;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:1px solid #eee;}
-.tabbtn{flex:1;border:none;background:none;padding:10px 0;font-size:12px;font-weight:600;color:#999;cursor:pointer;}
+.tabbtn{flex:1;border:none;background:none;padding:9px 0;font-size:11px;font-weight:600;color:#999;cursor:pointer;}
 .tabbtn.on{color:#2962ff;}
-.tabbtn b{display:block;font-size:17px;line-height:1;margin-bottom:2px;}
+.tabbtn b{display:block;font-size:16px;line-height:1;margin-bottom:2px;}
 
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:14px;z-index:100;}
-.modal-content{background:#fff;padding:20px;border-radius:14px;width:100%;max-width:360px;}
-.modal h3{text-align:center;margin-bottom:16px;}
-.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.modal-content{background:#fff;padding:18px;border-radius:14px;width:100%;max-width:360px;}
+.modal h3{text-align:center;margin-bottom:14px;}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
 .modal-btns .btn{flex:1;min-width:84px;padding:12px;}
 </style>
 </head>
@@ -78,21 +86,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
 
   <!-- HOME -->
   <div class="tab active" id="tab-home">
-    <div id="boxes"></div>
-    <div class="today" id="todayTotals"></div>
-    <div class="section" style="padding-top:0"><h2>Today's log</h2><div id="todayLog"></div></div>
-    <div class="section" style="padding-top:0"><div class="field"><label>Note</label><input id="notesHome" placeholder="Notes"></div></div>
+    <div class="card">
+      <div class="today" id="todayTotals"></div>
+      <div id="boxes"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2>Today's log</h2><span id="logTotals"></span></div>
+      <div id="todayLog"></div>
+      <input class="noteinput" id="notesHome" placeholder="Note">
+    </div>
   </div>
 
   <!-- DATA -->
   <div class="tab" id="tab-data">
     <div class="section">
-      <h2>Totals</h2>
-      <div class="today" id="dataTotals" style="margin:0 0 10px"></div>
-      <h2>By day</h2>
+      <div class="today" id="dataTotals" style="margin-bottom:10px"></div>
+      <div class="card-head"><h2>By day (mg)</h2><button class="btn b-add" onclick="openAdd()">＋ Add entry</button></div>
       <div id="table"></div>
     </div>
-    <div class="section" style="padding-top:0"><div class="field"><label>Note</label><input id="notesData" placeholder="Notes"></div></div>
+    <div class="section" style="padding-top:0"><input class="noteinput" id="notesData" placeholder="Note"></div>
   </div>
 
   <!-- CHART -->
@@ -105,7 +117,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
       </div>
       <div id="chartSvg"></div>
     </div>
-    <p class="muted" style="margin:4px 16px 0">Shaded = 4 days before O / before P. Set O and P in Setup.</p>
+    <div class="cap" id="chartCap"></div>
+    <p class="muted" style="margin:4px 12px 0">Amber = 4 days before O · red = 4 days before P. Bars are mg per day.</p>
   </div>
 
   <!-- SETUP -->
@@ -119,17 +132,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
         <div class="field"><label>A 18 mg</label><input type="number" min="0" id="t-A-18"></div>
       </div>
     </div>
-    <div class="section" style="padding-top:0">
-      <h2>Due dates</h2>
-      <div class="grid2" id="dueGrid"></div>
-    </div>
+    <div class="section" style="padding-top:0"><h2>Due dates</h2><div class="grid2" id="dueGrid"></div></div>
     <div class="section" style="padding-top:0">
       <h2>Cycle dates</h2>
       <div class="grid2">
         <div class="field"><label>O date</label><input type="date" id="oDate"></div>
         <div class="field"><label>P date</label><input type="date" id="pDate"></div>
       </div>
-      <p class="muted">O and P repeat every 28 days to predict the future. When a real one lands early or late, update it here to resync.</p>
+      <p class="muted">O and P repeat every 28 days to predict the future. Update when a real one lands early or late.</p>
+    </div>
+    <div class="section" style="padding-top:0">
+      <h2>Bulk edit</h2>
+      <p class="muted" style="margin-bottom:6px">One row per dose: <code>Type,mg,YYYY-MM-DD,HH:MM</code> (e.g. <code>L,30,2026-11-20,09:10</code>). Replaces all entries.</p>
+      <div class="field"><textarea id="bulk" rows="5" placeholder="L,30,2026-11-20,09:10"></textarea></div>
+      <div class="modal-btns"><button class="btn b-blue" onclick="fillBulk()">Load current</button><button class="btn b-red" onclick="replaceBulk()">Replace all</button></div>
     </div>
     <div class="section" style="padding-top:0">
       <h2>Cloud sync (optional)</h2>
@@ -153,18 +169,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
 </div>
 
 <!-- Dose edit modal -->
-<div id="doseModal" class="modal">
-  <div class="modal-content">
-    <h3 id="doseTitle">Edit</h3>
-    <div class="field"><label>Date</label><input type="date" id="doseDate"></div>
-    <div class="field"><label>Time</label><input type="time" id="doseTime"></div>
-    <div class="modal-btns">
-      <button class="btn b-blue" onclick="saveDose()">Save</button>
-      <button class="btn b-red" onclick="deleteDose()">Delete</button>
-      <button class="btn b-gray" onclick="closeModal('doseModal')">Cancel</button>
-    </div>
+<div id="doseModal" class="modal"><div class="modal-content">
+  <h3 id="doseTitle">Edit</h3>
+  <div class="field"><label>Date</label><input type="date" id="doseDate"></div>
+  <div class="field"><label>Time</label><input type="time" id="doseTime"></div>
+  <div class="modal-btns">
+    <button class="btn b-blue" onclick="saveDose()">Save</button>
+    <button class="btn b-red" onclick="deleteDose()">Delete</button>
+    <button class="btn b-gray" onclick="closeModal('doseModal')">Cancel</button>
   </div>
-</div>
+</div></div>
+
+<!-- Add entry modal -->
+<div id="addModal" class="modal"><div class="modal-content">
+  <h3>Add entry</h3>
+  <div class="field"><label>Type</label><select id="addKey">
+    <option value="L-30">L 30 mg</option><option value="L-20">L 20 mg</option>
+    <option value="A-40">A 40 mg</option><option value="A-18">A 18 mg</option></select></div>
+  <div class="field"><label>Date</label><input type="date" id="addDate"></div>
+  <div class="field"><label>Time</label><input type="time" id="addTime"></div>
+  <div class="modal-btns">
+    <button class="btn b-blue" onclick="saveNew()">Add</button>
+    <button class="btn b-gray" onclick="closeModal('addModal')">Cancel</button>
+  </div>
+</div></div>
 
 <script>
 const ITEMS=[
@@ -176,23 +204,23 @@ const ITEMS=[
 const GRP_COLOR={L:'#FF1493',A:'#2979FF'};
 const BORDER={L:'#F4A6C8',A:'#A9C6FF'};
 const DOW=['S','M','T','W','T','F','S'];
+const DOWC={0:'#3949ab',1:'#d32f2f',2:'#f4511e',3:'#fb8c00',4:'#c9a227',5:'#2e7d32',6:'#1e88e5'};
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 let data=blank(), currentEdit=null, pushTimer=null, chartMode='both';
 
 function blank(){const d={notes:'',oDate:'',pDate:'',totals:{},due:{},doses:{}};
   ITEMS.forEach(s=>{d.totals[s.key]=28;d.due[s.key]='';d.doses[s.key]=[];});return d;}
+function el(id){return document.getElementById(id);}
 
 window.addEventListener('load',()=>{
-  loadLocal();
-  bindInputs();
+  loadLocal();bindInputs();
   const u=localStorage.getItem('supaUrl')||'',k=localStorage.getItem('supaKey')||'',c=localStorage.getItem('trackerCode')||'';
   el('supaUrl').value=u;el('supaKey').value=k;el('syncCode').value=c;
-  fillSetup();
-  render();
+  fillSetup();render();
   if(u&&k&&c) pull(u,k,c,true);
 });
 
-function el(id){return document.getElementById(id);}
 function loadLocal(){try{const s=localStorage.getItem('trackerData');
   if(s){const p=JSON.parse(s);data=Object.assign(blank(),p);
     ITEMS.forEach(x=>{data.totals[x.key]??=28;data.due[x.key]??='';if(!Array.isArray(data.doses[x.key]))data.doses[x.key]=[];});}
@@ -201,12 +229,16 @@ function save(){try{localStorage.setItem('trackerData',JSON.stringify(data));}ca
   const u=localStorage.getItem('supaUrl'),k=localStorage.getItem('supaKey'),c=localStorage.getItem('trackerCode');
   if(u&&k&&c){clearTimeout(pushTimer);pushTimer=setTimeout(()=>push(u,k,c),800);}}
 
+function onEnter(id,fn){el(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();fn();}});}
 function bindInputs(){
   el('notesHome').addEventListener('input',e=>{data.notes=e.target.value;el('notesData').value=e.target.value;save();});
   el('notesData').addEventListener('input',e=>{data.notes=e.target.value;el('notesHome').value=e.target.value;save();});
-  ITEMS.forEach(s=>el('t-'+s.key).addEventListener('input',e=>{const v=parseInt(e.target.value);data.totals[s.key]=isNaN(v)?0:v;save();render();}));
+  ITEMS.forEach(s=>{const i=el('t-'+s.key);i.addEventListener('input',e=>{const v=parseInt(e.target.value);data.totals[s.key]=isNaN(v)?0:v;save();render();});i.addEventListener('keydown',e=>{if(e.key==='Enter')e.target.blur();});});
   el('oDate').addEventListener('change',e=>{data.oDate=e.target.value;save();drawChart();});
   el('pDate').addEventListener('change',e=>{data.pDate=e.target.value;save();drawChart();});
+  onEnter('doseDate',saveDose);onEnter('doseTime',saveDose);
+  onEnter('addDate',saveNew);onEnter('addTime',saveNew);
+  onEnter('syncCode',loadByCode);onEnter('supaUrl',connectSave);onEnter('supaKey',connectSave);
 }
 function fillSetup(){
   el('notesHome').value=data.notes;el('notesData').value=data.notes;
@@ -223,6 +255,7 @@ function daysLeft(k){if(!data.due[k])return null;const t=new Date();t.setHours(0
 function daysColor(n){if(n===null)return '#aaa';if(n<0||n<=2)return '#d32f2f';if(n<=6)return '#f57c00';return '#2e7d32';}
 function parseLocal(s){const p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
 function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtNice(d){return String(d.getDate()).padStart(2,'0')+'-'+MON[d.getMonth()]+'-'+d.getFullYear();}
 function localDay(ts){return fmt(new Date(ts));}
 function todayStr(){return fmt(new Date());}
 
@@ -238,10 +271,9 @@ function renderHome(){
     const pair=document.createElement('div');pair.className='pair';
     items.forEach(s=>{
       const rem=remaining(s.key),dl=daysLeft(s.key),remMg=rem*s.mg,totMg=(data.totals[s.key]||0)*s.mg;
-      const dlText=dl===null?'set due in setup':(dl<0?`overdue ${Math.abs(dl)}d`:(dl===0?'due today':`${dl} days left`));
+      const dlText=dl===null?'set due':(dl<0?`overdue ${Math.abs(dl)}d`:(dl===0?'due today':`${dl}d left`));
       const cell=document.createElement('div');cell.className='cell';
-      cell.innerHTML=`<div class="bar" style="background:${s.accent}"></div>
-        <div class="mg">${s.mg} mg</div>
+      cell.innerHTML=`<div class="mg" style="color:${s.accent==='#FFF9C4'||s.accent==='#FFEA00'?'#9a8a00':s.accent}">${s.mg} mg</div>
         <div class="rem">${rem}<small>/${data.totals[s.key]||0}</small></div>
         <div class="dl" style="color:${daysColor(dl)}">${dlText}</div>
         <div class="tiny">(${remMg}/${totMg} mg)</div>
@@ -250,47 +282,34 @@ function renderHome(){
     });
     box.appendChild(pair);wrap.appendChild(box);
   });
-  // today totals
-  const td=todayStr();const t=groupTotalsForDay(td);
-  el('todayTotals').innerHTML=todayCards(t);
-  // today log
-  const rows=allDoses().filter(r=>localDay(r.ts)===td).sort((a,b)=>new Date(b.ts)-new Date(a.ts));
-  el('todayLog').innerHTML=rows.length?rows.map(r=>entryHtml(r)).join(''):'<p class="muted">Nothing logged today.</p>';
+  const t=groupTotalsForDay(todayStr());
+  el('todayTotals').innerHTML=`<div class="tcard" style="background:#FDE7F1"><b style="color:${GRP_COLOR.L}">L ${t.L.ct} · ${t.L.mg}mg</b><span>today</span></div>
+    <div class="tcard" style="background:#E5EEFF"><b style="color:${GRP_COLOR.A}">A ${t.A.ct} · ${t.A.mg}mg</b><span>today</span></div>`;
+  el('logTotals').innerHTML=`<span style="color:${GRP_COLOR.L};font-weight:700">L ${t.L.ct}·${t.L.mg}mg</span> &nbsp; <span style="color:${GRP_COLOR.A};font-weight:700">A ${t.A.ct}·${t.A.mg}mg</span>`;
+  const rows=allDoses().filter(r=>localDay(r.ts)===todayStr()).sort((a,b)=>new Date(b.ts)-new Date(a.ts));
+  el('todayLog').innerHTML=rows.length?rows.map(entryHtml).join(''):'<p class="muted">Nothing logged today.</p>';
 }
-function todayCards(t){
-  return `<div class="tcard" style="background:#FDE7F1"><b style="color:${GRP_COLOR.L}">${t.L.ct} · ${t.L.mg}mg</b><span>L today</span></div>
-          <div class="tcard" style="background:#E5EEFF"><b style="color:${GRP_COLOR.A}">${t.A.ct} · ${t.A.mg}mg</b><span>A today</span></div>`;
-}
-function groupTotalsForDay(dayStr){
-  const t={L:{ct:0,mg:0},A:{ct:0,mg:0}};
-  ITEMS.forEach(s=>data.doses[s.key].forEach(d=>{if(localDay(d.ts)===dayStr){t[s.grp].ct++;t[s.grp].mg+=s.mg;}}));
-  return t;
-}
+function groupTotalsForDay(dayStr){const t={L:{ct:0,mg:0},A:{ct:0,mg:0}};
+  ITEMS.forEach(s=>data.doses[s.key].forEach(d=>{if(localDay(d.ts)===dayStr){t[s.grp].ct++;t[s.grp].mg+=s.mg;}}));return t;}
 function allDoses(){const r=[];ITEMS.forEach(s=>data.doses[s.key].forEach(d=>r.push({...d,grp:s.grp,mg:s.mg,accent:s.accent,key:s.key})));return r;}
 function entryHtml(r){const dt=new Date(r.ts);
   return `<div class="entry" onclick="openEdit('${r.key}','${r.id}')"><span><span class="chip" style="background:${r.accent}"></span>${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span><span>${r.grp} ${r.mg}mg</span></div>`;}
 
 function renderData(){
-  // grand totals
   let lMg=0,aMg=0,lCt=0,aCt=0;
   ITEMS.forEach(s=>{const c=data.doses[s.key].length,m=c*s.mg;if(s.grp==='L'){lMg+=m;lCt+=c;}else{aMg+=m;aCt+=c;}});
   el('dataTotals').innerHTML=`<div class="tcard" style="background:#FDE7F1"><b style="color:${GRP_COLOR.L}">${lMg}mg</b><span>L · ${lCt} logged</span></div>
     <div class="tcard" style="background:#E5EEFF"><b style="color:${GRP_COLOR.A}">${aMg}mg</b><span>A · ${aCt} logged</span></div>`;
-  // by day
-  const rows=allDoses();
-  const byDay={};
-  rows.forEach(r=>{const d=localDay(r.ts);(byDay[d]=byDay[d]||[]).push(r);});
+  const byDay={};allDoses().forEach(r=>{const d=localDay(r.ts);(byDay[d]=byDay[d]||[]).push(r);});
   const days=Object.keys(byDay).sort((a,b)=>b.localeCompare(a));
-  let html='';
-  if(!days.length){html='<p class="muted">Nothing logged yet.</p>';}
+  let html=days.length?'':'<p class="muted">Nothing logged yet.</p>';
   days.forEach(d=>{
     const list=byDay[d].sort((a,b)=>new Date(b.ts)-new Date(a.ts));
-    let L=0,A=0;list.forEach(r=>{if(r.grp==='L')L++;else A++;});
+    let Lm=0,Am=0;list.forEach(r=>{if(r.grp==='L')Lm+=r.mg;else Am+=r.mg;});
     const dt=parseLocal(d);
     html+=`<div class="day"><div class="day-head"><span class="dt">${DOW[dt.getDay()]} ${dt.getDate()}/${dt.getMonth()+1}</span>
-      <span class="tot"><b style="color:${GRP_COLOR.L}">L ${L}</b> · <b style="color:${GRP_COLOR.A}">A ${A}</b></span></div>`;
-    html+=list.map(r=>entryHtml(r)).join('');
-    html+='</div>';
+      <span class="tot"><b style="color:${GRP_COLOR.L}">L ${Lm} mg</b> · <b style="color:${GRP_COLOR.A}">A ${Am} mg</b></span></div>`;
+    html+=list.map(entryHtml).join('')+'</div>';
   });
   el('table').innerHTML=html;
 }
@@ -304,58 +323,72 @@ function saveDose(){const dv=el('doseDate').value,tv=el('doseTime').value;if(!dv
 function deleteDose(){if(!confirm('Delete this entry?'))return;
   data.doses[currentEdit.key]=data.doses[currentEdit.key].filter(d=>d.id!==currentEdit.id);save();render();closeModal('doseModal');}
 
+function openAdd(){const n=new Date();el('addDate').value=n.toISOString().split('T')[0];el('addTime').value=n.toTimeString().slice(0,5);el('addModal').style.display='flex';}
+function saveNew(){const key=el('addKey').value,dv=el('addDate').value,tv=el('addTime').value;if(!dv||!tv){alert('Set date and time');return;}
+  data.doses[key].push({id:uid(),ts:new Date(`${dv}T${tv}`).toISOString()});save();render();closeModal('addModal');}
+
 // ---------- CHART ----------
 function winStart(){const t=new Date();t.setHours(0,0,0,0);t.setDate(t.getDate()-13);return t;}
 function dayIdxOf(dateStr){return Math.round((parseLocal(dateStr)-winStart())/86400000);}
-function waveVal(t){
-  if(!data.oDate||!data.pDate)return null;
-  const o0=dayIdxOf(data.oDate),p0=dayIdxOf(data.pDate);const anchors=[];
-  for(let k=-2;k<=2;k++){anchors.push({t:o0+28*k,v:1});anchors.push({t:p0+28*k,v:-1});}
-  anchors.sort((a,b)=>a.t-b.t);
-  if(t<=anchors[0].t)return anchors[0].v;if(t>=anchors[anchors.length-1].t)return anchors[anchors.length-1].v;
-  let a,b;for(let i=0;i<anchors.length-1;i++){if(anchors[i].t<=t&&anchors[i+1].t>=t){a=anchors[i];b=anchors[i+1];break;}}
-  if(!a)return 0;if(b.t===a.t)return a.v;const tp=(t-a.t)/(b.t-a.t);return a.v*Math.cos(Math.PI*tp);
-}
+function nextProj(dateStr){if(!dateStr)return null;const t=new Date();t.setHours(0,0,0,0);let d=parseLocal(dateStr);while(d<t)d=new Date(d.getTime()+28*86400000);return d;}
+function waveVal(t){if(!data.oDate||!data.pDate)return null;
+  const o0=dayIdxOf(data.oDate),p0=dayIdxOf(data.pDate);const an=[];
+  for(let k=-2;k<=2;k++){an.push({t:o0+28*k,v:1});an.push({t:p0+28*k,v:-1});}an.sort((a,b)=>a.t-b.t);
+  if(t<=an[0].t)return an[0].v;if(t>=an[an.length-1].t)return an[an.length-1].v;
+  let a,b;for(let i=0;i<an.length-1;i++){if(an[i].t<=t&&an[i+1].t>=t){a=an[i];b=an[i+1];break;}}
+  if(!a)return 0;if(b.t===a.t)return a.v;return a.v*Math.cos(Math.PI*(t-a.t)/(b.t-a.t));}
 function setChartMode(m){chartMode=m;['both','L','A'].forEach(x=>el('ct-'+x).classList.toggle('on',x===m));drawChart();}
+
+function windowDays(){const s=winStart();const out=[];for(let i=0;i<28;i++){const d=new Date(s);d.setDate(d.getDate()+i);const ds=fmt(d);let l=0,a=0;
+  ITEMS.forEach(it=>data.doses[it.key].forEach(x=>{if(localDay(x.ts)===ds){if(it.grp==='L')l+=it.mg;else a+=it.mg;}}));out.push({d,ds,l,a});}return out;}
+
 function drawChart(){
-  const W=360,H=215,L=24,R=8,N=28,top=16,yb=175,plotW=W-L-R,cw=plotW/N,mid=100,amp=70;
-  const start=winStart();
-  // per-day counts
-  const cnt=[];for(let i=0;i<N;i++){const d=new Date(start);d.setDate(d.getDate()+i);const ds=fmt(d);let l=0,a=0;
-    ITEMS.forEach(s=>data.doses[s.key].forEach(x=>{if(localDay(x.ts)===ds){if(s.grp==='L')l++;else a++;}}));cnt.push({ds,d,l,a});}
-  const x=i=>L+i*cw+cw/2;
+  const W=360,H=228,L=30,R=8,N=28,top=14,yb=180,plotW=W-L-R,cw=plotW/N,plotH=yb-top;
+  const days=windowDays();
+  let maxMg=0;days.forEach(c=>{maxMg=Math.max(maxMg,c.l,c.a);});
+  const step=maxMg>120?20:10;let yMax=Math.max(step*3,Math.ceil(maxMg/step)*step);
+  const x=i=>L+i*cw+cw/2;const yOf=mg=>yb-(mg/yMax)*plotH;
   let s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" xmlns="http://www.w3.org/2000/svg">';
-  // highlight bands: 4 days before each projected O and P
-  function bands(anchorStr,color){if(!anchorStr)return '';let out='';const base=dayIdxOf(anchorStr);
-    for(let k=-1;k<=2;k++){const idx=base+28*k;for(let j=idx-4;j<idx;j++){if(j>=0&&j<N){out+='<rect x="'+(L+j*cw)+'" y="'+top+'" width="'+cw+'" height="'+(yb-top)+'" fill="'+color+'"/>';}}
-      if(idx>=0&&idx<N){out+='<text x="'+x(idx)+'" y="'+(top+10)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#555">'+(color==='rgba(255,171,0,.18)'?'O':'P')+'</text>';}}
-    return out;}
-  s+=bands(data.oDate,'rgba(255,171,0,.18)');
-  s+=bands(data.pDate,'rgba(233,30,99,.14)');
-  // week vertical lines (Mondays)
-  for(let i=0;i<N;i++){if(cnt[i].d.getDay()===1){s+='<line x1="'+(L+i*cw)+'" y1="'+top+'" x2="'+(L+i*cw)+'" y2="'+yb+'" stroke="#d7d7d7" stroke-width="1"/>';}}
-  // today line (index 13)
-  s+='<line x1="'+x(13)+'" y1="'+top+'" x2="'+x(13)+'" y2="'+yb+'" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/>';
+  // highlight bands
+  function bands(ds,color,letter){if(!ds)return '';let o='';const base=dayIdxOf(ds);
+    for(let k=-1;k<=2;k++){const idx=base+28*k;for(let j=idx-4;j<idx;j++){if(j>=0&&j<N)o+='<rect x="'+(L+j*cw)+'" y="'+top+'" width="'+cw+'" height="'+(yb-top)+'" fill="'+color+'"/>';}
+      if(idx>=0&&idx<N)o+='<text x="'+x(idx)+'" y="'+(top+9)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#555">'+letter+'</text>';}return o;}
+  s+=bands(data.oDate,'rgba(255,171,0,.20)','O')+bands(data.pDate,'rgba(233,30,99,.16)','P');
+  // y gridlines (mg)
+  for(let m=0;m<=yMax;m+=step){const y=yOf(m);s+='<line x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'" stroke="#eee" stroke-width="1"/>';s+='<text x="'+(L-3)+'" y="'+(y+3)+'" text-anchor="end" font-size="8" fill="#999">'+m+'</text>';}
+  // week lines (Mondays)
+  for(let i=0;i<N;i++){if(days[i].d.getDay()===1)s+='<line x1="'+(L+i*cw)+'" y1="'+top+'" x2="'+(L+i*cw)+'" y2="'+yb+'" stroke="#cfcfcf" stroke-width="1"/>';}
+  // today
+  s+='<line x1="'+x(13)+'" y1="'+top+'" x2="'+x(13)+'" y2="'+yb+'" stroke="#444" stroke-width="1.5" stroke-dasharray="3,2"/>';
+  s+='<text x="'+x(13)+'" y="'+(top-3)+'" text-anchor="middle" font-size="8" font-weight="700" fill="#444">today</text>';
   // wave
-  if(data.oDate&&data.pDate){let pts='';for(let f=-0.5;f<=N-0.5;f+=0.5){const v=waveVal(f);const px=L+f*cw+cw/2;const py=mid-v*amp;pts+=(pts?' L':'M')+px.toFixed(1)+','+py.toFixed(1);}
-    s+='<path d="'+pts+'" fill="none" stroke="#7F77DD" stroke-width="2"/>';}
+  if(data.oDate&&data.pDate){const mid=(top+yb)/2,amp=plotH/2*0.8;let p='';for(let f=-0.5;f<=N-0.5;f+=0.5){const v=waveVal(f);p+=(p?' L':'M')+(L+f*cw+cw/2).toFixed(1)+','+(mid-v*amp).toFixed(1);}s+='<path d="'+p+'" fill="none" stroke="#7F77DD" stroke-width="1.5" opacity=".7"/>';}
   // baseline
-  s+='<line x1="'+L+'" y1="'+yb+'" x2="'+(W-R)+'" y2="'+yb+'" stroke="#c3c2b7" stroke-width="1"/>';
-  // bars
-  const unit=16,cap=120,bw=cw*0.3;
-  cnt.forEach((c,i)=>{
-    if(chartMode!=='A'&&c.l>0){const h=Math.min(cap,c.l*unit);s+='<rect x="'+(x(i)-bw-1)+'" y="'+(yb-h)+'" width="'+bw+'" height="'+h+'" rx="1" fill="'+GRP_COLOR.L+'"/>';}
-    if(chartMode!=='L'&&c.a>0){const h=Math.min(cap,c.a*unit);s+='<rect x="'+(x(i)+1)+'" y="'+(yb-h)+'" width="'+bw+'" height="'+h+'" rx="1" fill="'+GRP_COLOR.A+'"/>';}
-  });
-  // day-of-week letters
-  cnt.forEach((c,i)=>{s+='<text x="'+x(i)+'" y="'+(yb+14)+'" text-anchor="middle" font-size="8" fill="#999">'+DOW[c.d.getDay()]+'</text>';});
+  s+='<line x1="'+L+'" y1="'+yb+'" x2="'+(W-R)+'" y2="'+yb+'" stroke="#bbb" stroke-width="1"/>';
+  // bars (mg)
+  const bw=cw*0.3;
+  days.forEach((c,i)=>{if(chartMode!=='A'&&c.l>0)s+='<rect x="'+(x(i)-bw-1)+'" y="'+yOf(c.l)+'" width="'+bw+'" height="'+(yb-yOf(c.l))+'" rx="1" fill="'+GRP_COLOR.L+'"/>';
+    if(chartMode!=='L'&&c.a>0)s+='<rect x="'+(x(i)+1)+'" y="'+yOf(c.a)+'" width="'+bw+'" height="'+(yb-yOf(c.a))+'" rx="1" fill="'+GRP_COLOR.A+'"/>';});
+  // day letters, hot-cold coloured
+  days.forEach((c,i)=>{s+='<text x="'+x(i)+'" y="'+(yb+13)+'" text-anchor="middle" font-size="9" font-weight="700" fill="'+DOWC[c.d.getDay()]+'">'+DOW[c.d.getDay()]+'</text>';});
   s+='</svg>';
   el('chartSvg').innerHTML=s;
+  let cap='Today '+fmtNice(new Date());
+  const no=nextProj(data.oDate),np=nextProj(data.pDate);
+  if(no)cap+=' · next O '+fmtNice(no);if(np)cap+=' · next P '+fmtNice(np);
+  el('chartCap').textContent=cap;
 }
 
-// ---------- tabs ----------
-function showTab(name){['home','data','chart','setup'].forEach(n=>{el('tab-'+n).classList.toggle('active',n===name);el('nav-'+n).classList.toggle('on',n===name);});
-  if(name==='chart')drawChart();}
+function showTab(name){['home','data','chart','setup'].forEach(n=>{el('tab-'+n).classList.toggle('active',n===name);el('nav-'+n).classList.toggle('on',n===name);});if(name==='chart')drawChart();}
+
+// ---------- bulk ----------
+function fillBulk(){const rows=allDoses().sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+  el('bulk').value=rows.map(r=>{const dt=new Date(r.ts);return `${r.grp},${r.mg},${fmt(dt)},${dt.toTimeString().slice(0,5)}`;}).join('\n');}
+function replaceBulk(){if(!confirm('Replace ALL entries with the rows above?'))return;
+  const fresh={};ITEMS.forEach(s=>fresh[s.key]=[]);
+  el('bulk').value.split(/\r?\n/).forEach(line=>{const p=line.split(',').map(x=>x.trim());if(p.length<4)return;
+    const key=p[0].toUpperCase()+'-'+p[1];if(!fresh[key])return;const ts=new Date(p[2]+'T'+p[3]);if(isNaN(ts))return;fresh[key].push({id:uid(),ts:ts.toISOString()});});
+  data.doses=fresh;save();render();alert('Entries replaced.');}
 
 // ---------- Supabase sync ----------
 function setStatus(m){el('syncStatus').textContent=m;}
@@ -364,7 +397,7 @@ function headers(key,extra){return Object.assign({apikey:key,'Authorization':'Be
 function rememberCfg(u,k,c){localStorage.setItem('supaUrl',u);localStorage.setItem('supaKey',k);localStorage.setItem('trackerCode',c);}
 async function connectSave(){const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}
   setStatus('Saving…');try{const res=await fetch(u+'/rest/v1/boards',{method:'POST',headers:headers(k,{'Prefer':'resolution=merge-duplicates'}),body:JSON.stringify({code:c,data})});
-    if(!res.ok)throw new Error();rememberCfg(u,k,c);setStatus('Connected & saved. It now auto-saves from here.');}catch(e){setStatus('Save failed — check URL/key and that you ran the setup SQL.');}}
+  if(!res.ok)throw new Error();rememberCfg(u,k,c);setStatus('Connected & saved. It now auto-saves from here.');}catch(e){setStatus('Save failed — check URL/key and that you ran the setup SQL.');}}
 async function loadByCode(){const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}pull(u,k,c,false);}
 async function pull(u,k,c,silent){if(!silent)setStatus('Loading…');
   try{const res=await fetch(u+'/rest/v1/boards?code=eq.'+encodeURIComponent(c)+'&select=data',{headers:headers(k)});if(!res.ok)throw new Error();
@@ -376,11 +409,18 @@ async function push(u,k,c){try{await fetch(u+'/rest/v1/boards',{method:'POST',he
 
 function closeModal(id){el(id).style.display='none';currentEdit=null;}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-function exportCSV(){const rows=allDoses().sort((a,b)=>new Date(a.ts)-new Date(b.ts));
-  let csv='Type,Strength(mg),Date,Time,Timestamp\n';
-  rows.forEach(r=>{const dt=new Date(r.ts);csv+=`${r.grp},${r.mg},${dt.toLocaleDateString('en-GB')},${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})},${r.ts}\n`;});
+function exportCSV(){
+  let csv='SETTINGS\nO date,'+(data.oDate||'')+'\nP date,'+(data.pDate||'')+'\n';
+  ITEMS.forEach(s=>csv+=`Pack ${s.grp}${s.mg},${data.totals[s.key]},Due,${data.due[s.key]||''}\n`);
+  csv+='\nDAILY TOTALS (mg)\nDate,DOW,L mg,A mg\n';
+  const byDay={};allDoses().forEach(r=>{const d=localDay(r.ts);byDay[d]=byDay[d]||{L:0,A:0};byDay[d][r.grp]+=r.mg;});
+  Object.keys(byDay).sort().forEach(d=>{const dt=parseLocal(d);csv+=`${fmtNice(dt)},${DOW[dt.getDay()]},${byDay[d].L},${byDay[d].A}\n`;});
+  csv+='\nCHART WINDOW (28 days, mg)\nDate,DOW,L mg,A mg\n';
+  windowDays().forEach(c=>csv+=`${fmtNice(c.d)},${DOW[c.d.getDay()]},${c.l},${c.a}\n`);
+  csv+='\nDOSES\nType,Strength(mg),Date,Time,Timestamp\n';
+  allDoses().sort((a,b)=>new Date(a.ts)-new Date(b.ts)).forEach(r=>{const dt=new Date(r.ts);csv+=`${r.grp},${r.mg},${fmtNice(dt)},${dt.toTimeString().slice(0,5)},${r.ts}\n`;});
   let l=0,a=0;ITEMS.forEach(s=>{const m=data.doses[s.key].length*s.mg;if(s.grp==='L')l+=m;else a+=m;});
-  csv+=`\nTotal L(mg),${l}\nTotal A(mg),${a}\nGrand total(mg),${l+a}\n`;
+  csv+=`\nGRAND TOTALS (mg)\nL,${l}\nA,${a}\nBoth,${l+a}\n`;
   const b=new Blob([csv],{type:'text/csv'});const uu=URL.createObjectURL(b);const link=document.createElement('a');link.href=uu;link.download='tracker-data.csv';link.click();URL.revokeObjectURL(uu);}
 window.onclick=e=>{if(e.target.classList.contains('modal')){e.target.style.display='none';currentEdit=null;}};
 </script>
