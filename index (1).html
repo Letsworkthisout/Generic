@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tracker</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+ background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;padding:10px;color:#222;}
+.container{max-width:460px;margin:0 auto;background:#fff;border-radius:18px;
+ box-shadow:0 10px 30px rgba(0,0,0,.3);overflow:hidden;padding-top:6px;}
+.gear{background:#eee;border:none;font-size:15px;width:32px;height:32px;border-radius:9px;cursor:pointer;}
+
+.box{border-radius:12px;margin:12px;overflow:hidden;}
+.box-head{display:flex;justify-content:space-between;align-items:center;
+ padding:5px 12px;font-weight:800;font-size:15px;background:transparent;}
+.box-head span{font-size:11px;font-weight:600;color:#777;}
+.pair{display:grid;grid-template-columns:1fr 1fr;}
+.cell{padding:8px;text-align:center;}
+.cell+.cell{border-left:1px solid #eee;}
+.bar{height:5px;border-radius:3px;margin-bottom:6px;}
+.mg{font-weight:700;font-size:13px;}
+.rem{font-size:21px;font-weight:800;line-height:1.1;margin-top:1px;}
+.rem small{font-size:12px;color:#999;font-weight:600;}
+.dl{font-size:11px;font-weight:700;margin:2px 0 0;}
+.tiny{font-size:10px;color:#9a9a9a;}
+.log{width:100%;border:none;border-radius:8px;padding:9px 0;font-weight:700;
+ font-size:14px;cursor:pointer;margin-top:6px;}
+.log:active{transform:scale(.96);}
+.log:disabled{background:#d8d8d8 !important;color:#999 !important;}
+
+.viewbtn{display:block;width:calc(100% - 24px);margin:4px 12px 10px;padding:13px;
+ background:#2962ff;color:#fff;border:none;border-radius:11px;font-size:16px;
+ font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(41,98,255,.35);}
+
+.section{border-top:8px solid #f0f0f0;padding:14px 16px;}
+.section h2{font-size:14px;margin-bottom:10px;color:#333;}
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.sec-head h2{margin:0;}
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:12px;font-weight:600;margin-bottom:4px;color:#555;}
+.field input{width:100%;padding:9px;border:2px solid #e2e2e2;border-radius:8px;font-size:14px;}
+.due-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.due-grid label{font-size:11px;}
+
+.totals{display:flex;gap:8px;margin-bottom:12px;}
+.tot{flex:1;background:#f5f5f5;border-radius:10px;padding:9px;text-align:center;}
+.tot b{display:block;font-size:16px;}
+.tot span{font-size:10px;color:#777;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 5px;text-align:left;border-bottom:1px solid #eee;}
+th{background:#fafafa;font-weight:600;}
+.row{cursor:pointer;}.row:active{background:#f0f0f0;}
+.chip{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+
+.sync-row{display:flex;gap:8px;}.sync-row input{flex:1;}
+.btn{border:none;border-radius:8px;padding:10px 12px;font-weight:600;color:#fff;cursor:pointer;font-size:13px;}
+.b-blue{background:#2962ff;}.b-green{background:#2e7d32;}.b-gray{background:#666;}.b-red{background:#d32f2f;}
+.status{font-size:12px;margin-top:8px;color:#555;min-height:16px;}
+.muted{font-size:12px;color:#888;}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;
+ align-items:center;justify-content:center;padding:14px;z-index:100;}
+.modal-content{background:#fff;padding:20px;border-radius:14px;width:100%;max-width:360px;}
+.modal h3{text-align:center;margin-bottom:16px;}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.modal-btns .btn{flex:1;min-width:84px;padding:12px;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="boxes"></div>
+
+  <button class="viewbtn" onclick="scrollToData()">📊 View data &amp; totals</button>
+
+  <div class="section" id="dataSection">
+    <h2>Data &amp; totals</h2>
+    <div class="totals" id="totals"></div>
+    <div id="table"></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><h2>Due dates</h2><button class="gear" onclick="openSettings()">⚙︎</button></div>
+    <div class="due-grid" id="dueGrid"></div>
+  </div>
+
+  <div class="section">
+    <h2>Notes</h2>
+    <div class="field"><label>Next date (optional)</label><input type="date" id="collectionDate"></div>
+    <div class="field"><label>Notes</label><input type="text" id="notes" placeholder="Notes"></div>
+  </div>
+
+  <div class="section">
+    <h2>Cloud sync (optional)</h2>
+    <p class="muted" style="margin-bottom:10px">Keeps data across devices and after clearing browser data. One-time Supabase setup (free) — see the steps I sent. Leave blank and it still saves on this device.</p>
+    <div class="field"><label>Project URL</label><input id="supaUrl" placeholder="https://xxxx.supabase.co"></div>
+    <div class="field"><label>Anon public key</label><input id="supaKey" placeholder="eyJ..."></div>
+    <div class="sync-row"><input id="syncCode" placeholder="Your code (any word)"><button class="btn b-blue" onclick="loadByCode()">Load</button></div>
+    <div class="modal-btns" style="margin-top:8px">
+      <button class="btn b-green" onclick="connectSave()">Connect &amp; save</button>
+      <button class="btn b-gray" onclick="exportCSV()">Export CSV</button>
+    </div>
+    <div class="status" id="syncStatus"></div>
+  </div>
+</div>
+
+<!-- Dose edit modal -->
+<div id="doseModal" class="modal">
+  <div class="modal-content">
+    <h3 id="doseTitle">Edit</h3>
+    <div class="field"><label>Date</label><input type="date" id="doseDate"></div>
+    <div class="field"><label>Time</label><input type="time" id="doseTime"></div>
+    <div class="modal-btns">
+      <button class="btn b-blue" onclick="saveDose()">Save</button>
+      <button class="btn b-red" onclick="deleteDose()">Delete</button>
+      <button class="btn b-gray" onclick="closeModal('doseModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div id="setModal" class="modal">
+  <div class="modal-content">
+    <h3>Pack sizes</h3>
+    <p class="muted" style="margin-bottom:12px">Full-cycle quantity for each.</p>
+    <div class="field"><label>L · 30 mg</label><input type="number" id="t-L-30" min="0"></div>
+    <div class="field"><label>L · 20 mg</label><input type="number" id="t-L-20" min="0"></div>
+    <div class="field"><label>A · 40 mg</label><input type="number" id="t-A-40" min="0"></div>
+    <div class="field"><label>A · 18 mg</label><input type="number" id="t-A-18" min="0"></div>
+    <div class="modal-btns">
+      <button class="btn b-blue" onclick="saveSettings()">Save</button>
+      <button class="btn b-gray" onclick="closeModal('setModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ITEMS=[
+  {key:'L-30',grp:'L',mg:30,accent:'#FF1493',text:'#fff'},
+  {key:'L-20',grp:'L',mg:20,accent:'#FFF9C4',text:'#333'},
+  {key:'A-40',grp:'A',mg:40,accent:'#2979FF',text:'#fff'},
+  {key:'A-18',grp:'A',mg:18,accent:'#FFEA00',text:'#333'},
+];
+const GRP_COLOR={L:'#FF1493',A:'#2979FF'};
+const BORDER={L:'#F4A6C8',A:'#A9C6FF'};
+
+let data=blank(), currentEdit=null, pushTimer=null;
+
+function blank(){const d={notes:'',collectionDate:'',totals:{},due:{},doses:{}};
+  ITEMS.forEach(s=>{d.totals[s.key]=28;d.due[s.key]='';d.doses[s.key]=[];});return d;}
+
+window.addEventListener('load',()=>{
+  loadLocal();
+  document.getElementById('collectionDate').value=data.collectionDate;
+  document.getElementById('notes').value=data.notes;
+  document.getElementById('collectionDate').addEventListener('change',e=>{data.collectionDate=e.target.value;save();});
+  document.getElementById('notes').addEventListener('input',e=>{data.notes=e.target.value;save();});
+  // restore sync config
+  const u=localStorage.getItem('supaUrl')||'',k=localStorage.getItem('supaKey')||'',c=localStorage.getItem('trackerCode')||'';
+  document.getElementById('supaUrl').value=u;document.getElementById('supaKey').value=k;document.getElementById('syncCode').value=c;
+  render();
+  if(u&&k&&c) pull(u,k,c,true);
+});
+
+function loadLocal(){try{const s=localStorage.getItem('trackerData');
+  if(s){const p=JSON.parse(s);data=Object.assign(blank(),p);
+    ITEMS.forEach(x=>{data.totals[x.key]??=28;data.due[x.key]??='';if(!Array.isArray(data.doses[x.key]))data.doses[x.key]=[];});}
+  }catch(e){}}
+function save(){try{localStorage.setItem('trackerData',JSON.stringify(data));}catch(e){}
+  const u=localStorage.getItem('supaUrl'),k=localStorage.getItem('supaKey'),c=localStorage.getItem('trackerCode');
+  if(u&&k&&c){clearTimeout(pushTimer);pushTimer=setTimeout(()=>push(u,k,c),800);}}
+
+function remaining(k){return Math.max(0,(data.totals[k]||0)-data.doses[k].length);}
+function daysLeft(k){if(!data.due[k])return null;const t=new Date();t.setHours(0,0,0,0);
+  return Math.ceil((new Date(data.due[k])-t)/86400000);}
+function daysColor(n){if(n===null)return '#aaa';if(n<0||n<=2)return '#d32f2f';if(n<=6)return '#f57c00';return '#2e7d32';}
+
+function render(){
+  const wrap=document.getElementById('boxes');wrap.innerHTML='';
+  ['L','A'].forEach(grp=>{
+    const items=ITEMS.filter(i=>i.grp===grp);
+    const left=items.reduce((a,s)=>a+remaining(s.key),0);
+    const box=document.createElement('div');box.className='box';
+    box.style.border='2px solid '+BORDER[grp];
+    box.innerHTML=`<div class="box-head" style="color:${GRP_COLOR[grp]}">${grp}<span>${left} left</span></div>`;
+    const pair=document.createElement('div');pair.className='pair';
+    items.forEach(s=>{
+      const rem=remaining(s.key),dl=daysLeft(s.key);
+      const remMg=rem*s.mg,totMg=(data.totals[s.key]||0)*s.mg;
+      const dlText=dl===null?'set due below':(dl<0?`overdue ${Math.abs(dl)}d`:(dl===0?'due today':`${dl} days left`));
+      const cell=document.createElement('div');cell.className='cell';
+      cell.innerHTML=`
+        <div class="bar" style="background:${s.accent}"></div>
+        <div class="mg">${s.mg} mg</div>
+        <div class="rem">${rem}<small>/${data.totals[s.key]||0}</small></div>
+        <div class="dl" style="color:${daysColor(dl)}">${dlText}</div>
+        <div class="tiny">(${remMg}/${totMg} mg)</div>
+        <button class="log" style="background:${s.accent};color:${s.text}" ${rem===0?'disabled':''} onclick="takeOne('${s.key}')">Log</button>`;
+      pair.appendChild(cell);
+    });
+    box.appendChild(pair);wrap.appendChild(box);
+  });
+  renderDue();renderData();
+}
+
+function renderDue(){
+  const g=document.getElementById('dueGrid');g.innerHTML='';
+  ITEMS.forEach(s=>{
+    const d=document.createElement('div');d.className='field';
+    d.innerHTML=`<label>${s.grp} ${s.mg} mg</label><input type="date" value="${data.due[s.key]||''}" onchange="setDue('${s.key}',this.value)">`;
+    g.appendChild(d);
+  });
+}
+function setDue(k,v){data.due[k]=v;save();render();}
+function takeOne(k){data.doses[k].push({id:uid(),ts:new Date().toISOString()});save();render();}
+
+function renderData(){
+  let lMg=0,aMg=0,lCt=0,aCt=0;
+  ITEMS.forEach(s=>{const c=data.doses[s.key].length,m=c*s.mg;if(s.grp==='L'){lMg+=m;lCt+=c;}else{aMg+=m;aCt+=c;}});
+  document.getElementById('totals').innerHTML=`
+    <div class="tot"><b style="color:${GRP_COLOR.L}">${lMg}mg</b><span>L · ${lCt} logged</span></div>
+    <div class="tot"><b style="color:${GRP_COLOR.A}">${aMg}mg</b><span>A · ${aCt} logged</span></div>
+    <div class="tot"><b>${lMg+aMg}mg</b><span>Total</span></div>`;
+  const rows=[];
+  ITEMS.forEach(s=>data.doses[s.key].forEach(d=>rows.push({...d,grp:s.grp,mg:s.mg,accent:s.accent,key:s.key})));
+  rows.sort((a,b)=>new Date(b.ts)-new Date(a.ts));
+  let html;
+  if(!rows.length){html='<p class="muted" style="padding:8px 0">Nothing logged yet.</p>';}
+  else{
+    html='<table><thead><tr><th>Type</th><th>mg</th><th>Date</th><th>Time</th></tr></thead><tbody>';
+    rows.forEach(r=>{const dt=new Date(r.ts);
+      html+=`<tr class="row" onclick="openEdit('${r.key}','${r.id}')">
+        <td><span class="chip" style="background:${r.accent};border:1px solid #ddd"></span>${r.grp}</td>
+        <td>${r.mg}</td><td>${dt.toLocaleDateString('en-GB')}</td>
+        <td>${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td></tr>`;});
+    html+='</tbody></table><p class="muted" style="margin-top:6px">Tap a row to fix the date/time or delete.</p>';
+  }
+  document.getElementById('table').innerHTML=html;
+}
+function scrollToData(){document.getElementById('dataSection').scrollIntoView({behavior:'smooth'});}
+
+function openEdit(key,id){currentEdit={key,id};
+  const s=ITEMS.find(x=>x.key===key);const ts=new Date(data.doses[key].find(d=>d.id===id).ts);
+  document.getElementById('doseTitle').textContent=`${s.grp} · ${s.mg} mg`;
+  document.getElementById('doseDate').value=ts.toISOString().split('T')[0];
+  document.getElementById('doseTime').value=ts.toTimeString().slice(0,5);
+  document.getElementById('doseModal').style.display='flex';}
+function saveDose(){const dv=document.getElementById('doseDate').value,tv=document.getElementById('doseTime').value;
+  if(!dv||!tv){alert('Set date and time');return;}
+  data.doses[currentEdit.key].find(d=>d.id===currentEdit.id).ts=new Date(`${dv}T${tv}`).toISOString();
+  save();render();closeModal('doseModal');}
+function deleteDose(){if(!confirm('Delete this entry?'))return;
+  data.doses[currentEdit.key]=data.doses[currentEdit.key].filter(d=>d.id!==currentEdit.id);
+  save();render();closeModal('doseModal');}
+
+function openSettings(){ITEMS.forEach(s=>document.getElementById('t-'+s.key).value=data.totals[s.key]);
+  document.getElementById('setModal').style.display='flex';}
+function saveSettings(){ITEMS.forEach(s=>{const v=parseInt(document.getElementById('t-'+s.key).value);data.totals[s.key]=isNaN(v)?0:v;});
+  save();render();closeModal('setModal');}
+
+// ---- Supabase sync ----
+function setStatus(m){document.getElementById('syncStatus').textContent=m;}
+function val(id){return (document.getElementById(id).value||'').trim();}
+function headers(key,extra){return Object.assign({apikey:key,'Authorization':'Bearer '+key,'Content-Type':'application/json'},extra||{});}
+function rememberCfg(u,k,c){localStorage.setItem('supaUrl',u);localStorage.setItem('supaKey',k);localStorage.setItem('trackerCode',c);}
+
+async function connectSave(){
+  const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');
+  if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}
+  setStatus('Saving…');
+  try{
+    const res=await fetch(u+'/rest/v1/boards',{method:'POST',headers:headers(k,{'Prefer':'resolution=merge-duplicates'}),body:JSON.stringify({code:c,data})});
+    if(!res.ok) throw new Error(res.status);
+    rememberCfg(u,k,c);
+    setStatus('Connected & saved. Use the same 3 details + code on any device.');
+  }catch(e){setStatus('Save failed — check the URL/key and that you ran the setup SQL.');}
+}
+async function loadByCode(){
+  const u=val('supaUrl'),k=val('supaKey'),c=val('syncCode');
+  if(!u||!k||!c){setStatus('Fill in URL, key and a code first.');return;}
+  pull(u,k,c,false);
+}
+async function pull(u,k,c,silent){
+  if(!silent)setStatus('Loading…');
+  try{
+    const res=await fetch(u+'/rest/v1/boards?code=eq.'+encodeURIComponent(c)+'&select=data',{headers:headers(k)});
+    if(!res.ok) throw new Error();
+    const rows=await res.json();
+    if(!rows.length){if(!silent)setStatus('No saved data for that code yet. Tap Connect & save.');return;}
+    data=Object.assign(blank(),rows[0].data);
+    ITEMS.forEach(x=>{data.totals[x.key]??=28;data.due[x.key]??='';if(!Array.isArray(data.doses[x.key]))data.doses[x.key]=[];});
+    rememberCfg(u,k,c);localStorage.setItem('trackerData',JSON.stringify(data));
+    document.getElementById('collectionDate').value=data.collectionDate;document.getElementById('notes').value=data.notes;
+    render();if(!silent)setStatus('Loaded.');
+  }catch(e){if(!silent)setStatus('Load failed — check the URL/key.');}
+}
+async function push(u,k,c){try{await fetch(u+'/rest/v1/boards',{method:'POST',headers:headers(k,{'Prefer':'resolution=merge-duplicates'}),body:JSON.stringify({code:c,data})});}catch(e){}}
+
+// ---- helpers ----
+function closeModal(id){document.getElementById(id).style.display='none';currentEdit=null;}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function exportCSV(){const rows=[];ITEMS.forEach(s=>data.doses[s.key].forEach(d=>rows.push({...d,grp:s.grp,mg:s.mg})));
+  rows.sort((a,b)=>new Date(a.ts)-new Date(b.ts));
+  let csv='Type,Strength(mg),Date,Time,Timestamp\n';
+  rows.forEach(r=>{const dt=new Date(r.ts);
+    csv+=`${r.grp},${r.mg},${dt.toLocaleDateString('en-GB')},${dt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})},${r.ts}\n`;});
+  let l=0,a=0;ITEMS.forEach(s=>{const m=data.doses[s.key].length*s.mg;if(s.grp==='L')l+=m;else a+=m;});
+  csv+=`\nTotal L(mg),${l}\nTotal A(mg),${a}\nGrand total(mg),${l+a}\n`;
+  const b=new Blob([csv],{type:'text/csv'});const uu=URL.createObjectURL(b);
+  const link=document.createElement('a');link.href=uu;link.download='tracker-data.csv';link.click();URL.revokeObjectURL(uu);}
+window.onclick=e=>{if(e.target.classList.contains('modal')){e.target.style.display='none';currentEdit=null;}};
+</script>
+</body>
+</html>
